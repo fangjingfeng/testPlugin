@@ -1,0 +1,39 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url 'https://jitpack.io' }
+        jcenter()
+        google()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.1'
+//        classpath 'com.meituan.android.walle:plugin:1.1.7'
+        classpath 'org.ajoberstar:grgit:2.3.0'
+        classpath 'org.ajoberstar.reckon:reckon-gradle:0.13.0'
+    }
+}
+
+allprojects {
+    repositories {
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }
+        maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url 'https://jitpack.io' }
+        jcenter()
+        google()
+    }
+}
+
+configure(rootProject) {
+    apply plugin: 'org.ajoberstar.grgit'
+    apply plugin: 'org.ajoberstar.reckon'
+    reckon {
+        normal = scopeFromProp()
+        preRelease = stageFromProp('develop', 'release', 'hotfix', 'final')
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}

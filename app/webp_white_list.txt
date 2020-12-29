@@ -1,0 +1,2 @@
+bill_footer_sitepro_arrow.png
+ cart_checkbox_false.png

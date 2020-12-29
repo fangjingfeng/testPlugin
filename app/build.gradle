@@ -1,0 +1,111 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.3"
+
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
+    defaultConfig {
+        applicationId "com.example.plugin"
+        minSdkVersion 19
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0.1"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    signingConfigs {
+        debug {
+            keyAlias 'android_debug_key'
+            keyPassword 'android'
+            storeFile file("${rootDir}/config/signing/debug.keystore")
+            storePassword 'android'
+        }
+
+        release {
+            keyAlias 'scheduler'
+            keyPassword 'ctsiandroid'
+            storeFile file("${rootDir}/config/signing/scheduler.keystore")
+            storePassword 'ctsiandroid'
+        }
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
+        }
+
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    flavorDimensions 'environments'
+    productFlavors{
+        //测试环境
+        qetest{
+            buildConfigField "int" ,"ENV_TYPE","1"
+            buildConfigField "String","VERSION_APP","\"123-1\""
+            buildConfigField "String","APP_KEY","\"test\""
+            dimension "environments"
+        }
+
+        //预发布环境
+        develop{
+            buildConfigField "int" ,"ENV_TYPE","2"
+            buildConfigField "String","VERSION_APP","\"123-2\""
+            buildConfigField "String","APP_KEY","\"develop\""
+            dimension "environments"
+        }
+
+        //生产环境
+        porduct{
+            buildConfigField "int" ,"ENV_TYPE","3"
+            buildConfigField "String","VERSION_APP","\"123-3\""
+            buildConfigField "String","APP_KEY","\"porduct\""
+            dimension "environments"
+        }
+    }
+
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    //渠道打包
+    implementation 'com.meituan.android.walle:library:1.1.7'
+}
+
+
+//apply plugin: 'walle'
+//walle {
+//    // 指定渠道包的输出路径
+//    apkOutputFolder = new File("${project.buildDir}/outputs/channels");
+//    // 定制渠道包的APK的文件名称
+//    apkFileNameFormat = '${appName}-${channel}-${productFlavors}-${buildType}-v${versionName}-${versionCode}.apk';
+//    // 配置渠道文件列表，也可以通过channelList来配置
+//    channelFile = new File("${rootDir}/config/markets.txt");
+//}
+
+
+
