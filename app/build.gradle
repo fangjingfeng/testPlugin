@@ -15,8 +15,8 @@ android {
         applicationId "com.example.plugin"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0.1"
+        versionCode buildVersionCode()
+        versionName buildVersionName()
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
